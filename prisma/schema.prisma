@@ -11,34 +11,73 @@ datasource db {
 }
 
 model User {
-  id         Int          @id @default(autoincrement())
-  email      String
-  password   String
-  createdAt  DateTime     @default(now())
-  Credential Credential[]
-  Session    Session[]
-  
+  id          Int          @id @default(autoincrement())
+  email       String
+  password    String
+  createdAt   DateTime     @default(now())
+  credentials Credential[]
+  note        Note[]
+  wifi        Wifi[]
+  card        Card[]
+
   @@map("users")
 }
 
 model Credential {
-  id             Int    @id @default(autoincrement())
+  id             Int      @id @default(autoincrement())
   credentialName String
   url            String
   username       String
   password       String
+  createdAt      DateTime @default(now())
   userId         Int
-  user           User   @relation(fields: [userId], references: [id])
+  user           User     @relation(fields: [userId], references: [id])
 
   @@map("credentials")
 }
 
-model Session {
-  id          Int      @id @default(autoincrement())
-  token       String
-  userId      Int
-  user        User     @relation(fields: [userId], references: [id])
-  createdAt   DateTime @default(now())
+model Note {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
 
-  @@map("sessions")
+  @@map("notes")
+}
+
+model Card {
+  id         Int       @id @default(autoincrement())
+  title      String
+  number     String
+  holderName String
+  cvv        String
+  expiryDate String
+  password   String
+  isVirtual  Boolean
+  type       CardTypes
+  createdAt  DateTime  @default(now())
+  userId     Int
+  user       User      @relation(fields: [userId], references: [id])
+
+  @@map("cards")
+}
+
+enum CardTypes {
+  credit
+  debit
+  credit_debit
+}
+
+model Wifi {
+  id        Int      @id @default(autoincrement())
+  title     String
+  name      String
+  password  String
+  createdAt DateTime @default(now())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("wifis")
 }
