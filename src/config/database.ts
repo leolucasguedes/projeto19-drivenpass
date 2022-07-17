@@ -1,4 +1,17 @@
-import pkg from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
-const { PrismaClient } = pkg;
-export const prisma = new PrismaClient();
+import AppLog from './../events/AppLog.js';
+
+const prisma = new PrismaClient();
+exec();
+
+export default prisma;
+
+async function exec() {
+    try {
+      await prisma.$connect();
+      AppLog('Server', 'Connected to database');
+    } catch (error) {
+      AppLog('Error', `Internal error while connecting to database | ${error}`);
+    }
+  }
