@@ -24,14 +24,14 @@ model User {
 }
 
 model Credential {
-  id             Int      @id @default(autoincrement())
-  credentialName String
-  url            String
-  username       String
-  password       String
-  createdAt      DateTime @default(now())
-  userId         Int
-  user           User     @relation(fields: [userId], references: [id])
+  id        Int      @id @default(autoincrement())
+  title     String
+  url       String
+  username  String
+  password  String
+  createdAt DateTime @default(now())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
 
   @@map("credentials")
 }
