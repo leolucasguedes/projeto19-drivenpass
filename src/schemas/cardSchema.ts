@@ -2,7 +2,7 @@ import { Card } from "@prisma/client";
 import Joi from "joi";
 
 type CardData = Omit<Card, "id">
-export type CreateCardData = Omit<Card, "createdAt">
+export type CreateCardData = Omit<CardData, "createdAt">
 
 const cardSchema = Joi.object<CardData>({
   title: Joi.string().required(),

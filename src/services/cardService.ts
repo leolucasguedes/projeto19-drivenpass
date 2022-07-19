@@ -15,7 +15,6 @@ const CRYPTR = new Cryptr(cryptrSecret);
 
 export async function addNewCard(cardInfo: CreateCardData, userId: number) {
   const registeredCard = await CR.findByTitleAndUserId(cardInfo.title, Number(userId));
-  if (registeredCard) {
     if (registeredCard) {
       throw new AppError(
         "Title alrealdy used",
@@ -24,7 +23,6 @@ export async function addNewCard(cardInfo: CreateCardData, userId: number) {
         "Ensure to provide a new card name"
       );
     }
-  }
   const cryptrCVV = CRYPTR.encrypt(cardInfo.cvv);
   const cryptrPassword = CRYPTR.encrypt(cardInfo.password);
   const cardData = { ...cardInfo, cryptrCVV, cryptrPassword };
