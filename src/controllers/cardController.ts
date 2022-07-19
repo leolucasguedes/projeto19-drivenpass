@@ -22,19 +22,19 @@ export async function getUserCards(req: Request, res: Response) {
 }
 
 export async function getCardById(req: Request, res: Response) {
-  const user: User = res.locals.user;
   const { id } = req.params;
+  const user: User = res.locals.user;
 
-  const card = await CS.getCardById(Number(id), user.id);
+  const card = await CS.getOneCard(Number(id), user.id);
 
   res.status(200).send(card);
 }
 
 export async function deleteCard(req: Request, res: Response) {
+  const { id } = req.params;
   const user: User = res.locals.user;
-  const cardId: number = parseInt(req.params.id);
 
-  await CS.deleteCard(cardId, user.id);
+  await CS.deleteOneCard(Number(id), user.id);
 
   res.sendStatus(200);
 }

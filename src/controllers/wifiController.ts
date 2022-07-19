@@ -20,20 +20,20 @@ export async function getUserWifis(req: Request, res: Response) {
   res.status(200).send(wifis);
 }
 
-export async function getWifi(req: Request, res: Response) {
-  const user: User = res.locals.user;
+export async function getWifiById(req: Request, res: Response) {
   const { id } = req.params;
+  const user: User = res.locals.user;
 
-  const wifi = await WS.getWifiById(Number(id), user.id);
+  const wifi = await WS.getOneWifi(Number(id), user.id);
 
   res.status(200).send(wifi);
 }
 
 export async function deleteWifi(req: Request, res: Response) {
-  const user: User = res.locals.user;
   const { id } = req.params;
+  const user: User = res.locals.user;
 
-  await WS.deleteWifi(Number(id), user.id);
+  await WS.deleteOneWifi(Number(id), user.id);
 
   res.sendStatus(200);
 }

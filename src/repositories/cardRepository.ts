@@ -4,11 +4,11 @@ import { CreateCardData } from "../schemas/cardSchema.js";
 export async function findByTitleAndUserId(title:string, userId:number) {
     return await prisma.card.findFirst({where: { title, userId}})}
 
-export async function createCard(data:CreateCardData) {
-    return prisma.card.create({data})
+export async function createCard(userId: number, card: CreateCardData) {
+    return prisma.card.create({data: {...card, userId }})
 }
 
-export async function getUserCards(userId:number) {
+export async function getCards(userId:number) {
     return await prisma.card.findMany({where:{userId}})
 }
 

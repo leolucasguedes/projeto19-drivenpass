@@ -19,14 +19,12 @@ export async function addNewNote(noteInfo: CreateNoteData, userId: number) {
       );
   }
 
-  const noteData = { ...noteInfo, userId };
-
-  await NR.createSafeNote(noteData);
+  await NR.createNote(userId, noteInfo);
   AppLog("Service", "Note created");
 }
 
 export async function getAllNotes(userId: number) {
-  const result = await NR.getSafeNotes(userId);
+  const result = await NR.getNotes(userId);
   const notes = result.map((note: Note) => {
     delete note.userId;
     return note;
@@ -35,7 +33,7 @@ export async function getAllNotes(userId: number) {
   return notes;
 }
 
-export async function getNoteById(noteId: number, userId: number) {
+export async function getOneNote(noteId: number, userId: number) {
   const note = await NR.getNote(noteId, userId);
   if (!note) {
     throw new AppError(
@@ -53,7 +51,7 @@ export async function getNoteById(noteId: number, userId: number) {
   return note;
 }
 
-export async function deleteNote(noteId: number, userId: number) {
+export async function deleteOneNote(noteId: number, userId: number) {
   const note = await NR.getNote(noteId, userId);
   if (!note) {
     throw new AppError(
@@ -66,7 +64,8 @@ export async function deleteNote(noteId: number, userId: number) {
 
   await validNoteByUser(note, userId);
 
-  await NR.deleteSafeNote(noteId);
+  await NR.deleteNote(noteId);
+  AppLog("Service", "Note deleted");
 }
 
 async function validNoteByUser(note: Note, userId: number) {

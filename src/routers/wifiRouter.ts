@@ -7,9 +7,9 @@ import * as WC from "../controllers/wifiController.js";
 
 const wifiRouter = Router();
 
-wifiRouter.post("/:userId/notes/create", validToken, validSchema(wifiSchema, "/wifi/create"), WC.addWifi);
-wifiRouter.get("/:userId/notes", validToken, WC.getUserWifis);
-wifiRouter.get("/:userId/notes/:id", validToken, WC.getWifi);
-wifiRouter.delete("/:userId/notes/:id/delete", validToken, WC.deleteWifi);
+wifiRouter.post("/networks", validToken, validSchema(wifiSchema, "/networks"), WC.addWifi);
+wifiRouter.get("/networks", validToken, WC.getUserWifis);
+wifiRouter.get("/networks/:id", validToken, WC.getWifiById);
+wifiRouter.delete("/networks/:id/delete", validToken, WC.deleteWifi);
 
 export default wifiRouter;

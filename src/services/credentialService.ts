@@ -1,4 +1,4 @@
-import { Credential } from "@prisma/client";
+import { Credential, User } from "@prisma/client";
 import Cryptr from "cryptr";
 
 import * as CR from "../repositories/credentialRepository.js";
@@ -12,9 +12,9 @@ import "./../config/setup.js";
 const cryptrSecret = process.env.CRYPTR_SECRET || "secret";
 const CRYPTR = new Cryptr(cryptrSecret);
 
-export async function createCredential(credentialInfo: CreateCredentialData) {
-  const { title, userId } = credentialInfo;
-  const registeredCrendential = await CR.findByTitleAndUserId(title, userId);
+export async function createNewCredential(user: User, credentialInfo: CreateCredentialData) {
+  const registeredCrendential = await CR.findByTitleAndUserId(credentialInfo.title, user.id);
+  
   if (registeredCrendential) {
     throw new AppError(
       "Title alrealdy used",
@@ -23,15 +23,14 @@ export async function createCredential(credentialInfo: CreateCredentialData) {
       "Ensure to provide a new credential name"
     );
   }
-  const cryptPassword = CRYPTR.encrypt(credentialInfo.password);
-  const credentialData = { ...credentialInfo, cryptPassword };
+  credentialInfo.password = CRYPTR.encrypt(credentialInfo.password);
 
-  await CR.createCredential(credentialData);
+  await CR.createCredential(user.id, credentialInfo);
   AppLog("Service", "Credential Created");
 }
 
 export async function getAllCredentials(userId: number) {
-  const credentialsResult = await CR.getUserCredentials(userId);
+  const credentialsResult = await CR.getCredentials(userId);
   const credentials = credentialsResult.map((credential: Credential) => {
     credential.password = CRYPTR.decrypt(credential.password);
     delete credential.userId;
@@ -41,8 +40,8 @@ export async function getAllCredentials(userId: number) {
   return credentials;
 }
 
-export async function getCredentialById(credentialId: number, userId: number) {
-    const credential = await CR.getCredentialById(credentialId);
+export async function getOneCredential(credentialId: number, userId: number) {
+    const credential = await CR.getCredential(credentialId);
     if (!credential) {
       throw new AppError(
         "Credential not found",
@@ -55,11 +54,12 @@ export async function getCredentialById(credentialId: number, userId: number) {
   
     credential.password = CRYPTR.decrypt(credential.password);
     delete credential.userId;
+    AppLog("Service", "Credential found");
     return credential;
   }
 
-export async function deleteCredential(credentialId: number, userId: number) {
-  const credential = await CR.getCredentialById(credentialId);
+export async function deleteOneCredential(credentialId: number, userId: number) {
+  const credential = await CR.getCredential(credentialId);
   if (!credential) {
     throw new AppError(
       "Credential not found",
@@ -71,7 +71,7 @@ export async function deleteCredential(credentialId: number, userId: number) {
   await validCredentialById(credential, userId);
 
   await CR.deleteCredential(credential.id);
-  AppLog("Service", "Credentials deleted");
+  AppLog("Service", "Credential deleted");
 }
 
 async function validCredentialById(credential: Credential, userId: number) {

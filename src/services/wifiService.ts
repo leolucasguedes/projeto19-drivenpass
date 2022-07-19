@@ -16,14 +16,12 @@ const CRYPTR = new Cryptr(cryptrSecret);
 export async function addNewWifi(wifiInfo: CreateWifiData, userId: number) {
   wifiInfo.password = CRYPTR.encrypt(wifiInfo.password);
 
-  const wifiData = { ...wifiInfo, userId };
-
-  await WR.createWifi(wifiData);
+  await WR.createWifi(userId, wifiInfo);
   AppLog("Service", "Wifi added");
 }
 
 export async function getAllWifis(userId: number) {
-  const wifisResult = await WR.getUserWifis(userId);
+  const wifisResult = await WR.getWifis(userId);
   const wifis = wifisResult.map((wifi: Wifi) => {
     delete wifi.userId;
     wifi.password = CRYPTR.decrypt(wifi.password);
@@ -33,7 +31,7 @@ export async function getAllWifis(userId: number) {
   return wifis;
 }
 
-export async function getWifiById(wifiId: number, userId: number) {
+export async function getOneWifi(wifiId: number, userId: number) {
   const wifi = await WR.getWifi(wifiId, userId);
   if (!wifi) {
     throw new AppError(
@@ -53,7 +51,7 @@ export async function getWifiById(wifiId: number, userId: number) {
   return wifi;
 }
 
-export async function deleteWifi(wifiId: number, userId: number) {
+export async function deleteOneWifi(wifiId: number, userId: number) {
   const wifi = await WR.getWifi(wifiId, userId);
   if (!wifi) {
     throw new AppError(

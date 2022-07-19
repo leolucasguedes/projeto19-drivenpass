@@ -7,9 +7,9 @@ import * as CC from "../controllers/credentialController.js";
 
 const credentialRouter = Router();
 
-credentialRouter.post("/:userId/credential",validToken ,validSchema(credentialSchema, "/credential"), CC.createCredential)
-credentialRouter.get('/:userId/credential', validToken, CC.getUserCredentials)
-credentialRouter.get('/:userId/credential/:id', validToken, CC.getCredentialById)
-credentialRouter.delete('/:userId/credential/:id', validToken, CC.deleteCredential)
+credentialRouter.post("/credentials", validToken, validSchema(credentialSchema, "/credentials"), CC.createCredential)
+credentialRouter.get('/credentials', validToken, CC.getUserCredentials)
+credentialRouter.get('/credentials/:id', validToken, CC.getCredentialById)
+credentialRouter.delete('/credentials/:id', validToken, CC.deleteCredential)
 
 export default credentialRouter;

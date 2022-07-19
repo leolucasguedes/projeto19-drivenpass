@@ -23,16 +23,15 @@ export async function addNewCard(cardInfo: CreateCardData, userId: number) {
         "Ensure to provide a new card name"
       );
     }
-  const cryptrCVV = CRYPTR.encrypt(cardInfo.cvv);
-  const cryptrPassword = CRYPTR.encrypt(cardInfo.password);
-  const cardData = { ...cardInfo, cryptrCVV, cryptrPassword };
+  cardInfo.cvv = CRYPTR.encrypt(cardInfo.cvv);
+  cardInfo.password = CRYPTR.encrypt(cardInfo.password);
 
-  await CR.createCard(cardData);
+  await CR.createCard(userId, cardInfo);
   AppLog("Service", "Card added");
 }
 
 export async function getAllCards(userId: number) {
-  const cardsResult = await CR.getUserCards(userId);
+  const cardsResult = await CR.getCards(userId);
   const cards = cardsResult.map((card: Card) => {
     delete card.userId;
     card.cvv = CRYPTR.decrypt(card.cvv);
@@ -43,7 +42,7 @@ export async function getAllCards(userId: number) {
   return cards;
 }
 
-export async function getCardById(cardId: number, userId: number) {
+export async function getOneCard(cardId: number, userId: number) {
   const card = await CR.getCard(cardId, userId);
   if (!card) {
     throw new AppError(
@@ -64,7 +63,7 @@ export async function getCardById(cardId: number, userId: number) {
   return card;
 }
 
-export async function deleteCard(cardId: number, userId: number) {
+export async function deleteOneCard(cardId: number, userId: number) {
   const card = await CR.getCard(cardId, userId);
   if (!card) {
     throw new AppError(

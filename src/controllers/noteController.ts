@@ -20,20 +20,20 @@ export async function getUserNotes(req: Request, res: Response) {
   res.status(200).send(notes);
 }
 
-export async function getNote(req: Request, res: Response) {
-  const user: User = res.locals.user;
+export async function getNoteById(req: Request, res: Response) {
   const { id } = req.params;
+  const user: User = res.locals.user;
 
-  const note = await NS.getNoteById(Number(id), user.id);
+  const note = await NS.getOneNote(Number(id), user.id);
 
   res.status(200).send(note);
 }
 
 export async function deleteNote(req: Request, res: Response) {
-  const user: User = res.locals.user;
   const { id } = req.params;
+  const user: User = res.locals.user;
 
-  await NS.deleteNote(Number(id), user.id);
+  await NS.deleteOneNote(Number(id), user.id);
 
   res.sendStatus(200);
 }

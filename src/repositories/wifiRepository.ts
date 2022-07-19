@@ -4,11 +4,11 @@ import { CreateWifiData } from "../schemas/wifiSchema.js";
 export async function findByTitleAndUserId(title:string, userId:number) {
     return await prisma.wifi.findFirst({where: { title,userId}})}
 
-export async function createWifi(data:CreateWifiData) {
-    return prisma.wifi.create({data})
+export async function createWifi(userId: number, wifi: CreateWifiData) {
+    return prisma.wifi.create({data: {...wifi, userId }})
 }
 
-export async function getUserWifis(userId:number) {
+export async function getWifis(userId:number) {
     return await prisma.wifi.findMany({where:{userId}})
 }
 
