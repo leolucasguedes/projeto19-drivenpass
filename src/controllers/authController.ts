@@ -4,7 +4,7 @@ import { CreateUserData } from "../repositories/authRepository.js";
 import * as AS from "../services/authService.js";
 
 export async function registerUser(req: Request, res: Response) {
-  const userInfo: CreateUserData = res.locals.body;
+  const userInfo: CreateUserData = req.body;
 
   await AS.createUser(userInfo);
 
@@ -12,7 +12,7 @@ export async function registerUser(req: Request, res: Response) {
 }
 
 export async function loginUser(req: Request, res: Response) {
-  const userInfo: CreateUserData = res.locals.body;
+  const userInfo: CreateUserData = req.body;
 
   const token = await AS.loginUser(userInfo);
 

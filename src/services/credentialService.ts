@@ -30,8 +30,8 @@ export async function createNewCredential(user: User, credentialInfo: CreateCred
 }
 
 export async function getAllCredentials(userId: number) {
-  const credentialsResult = await CR.getCredentials(userId);
-  const credentials = credentialsResult.map((credential: Credential) => {
+  const result = await CR.getCredentials(userId);
+  const credentials = result.map((credential: Credential) => {
     credential.password = CRYPTR.decrypt(credential.password);
     delete credential.userId;
     return credential;

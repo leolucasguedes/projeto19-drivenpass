@@ -19,6 +19,7 @@ model User {
   note        Note[]
   wifi        Wifi[]
   card        Card[]
+  documents    Document[]
 
   @@map("users")
 }
@@ -80,4 +81,26 @@ model Wifi {
   user      User     @relation(fields: [userId], references: [id])
 
   @@map("wifis")
+}
+
+model Document {
+  id             Int          @id @default(autoincrement())
+  title          String
+  type           DocumentType
+  fullName       String
+  expeditionDate String
+  expirationDate String
+  docNumber      String
+  issuer         String
+  createdAt DateTime @default(now())
+  user           User        @relation(fields: [userId], references: [id])
+  userId         Int
+
+  @@unique([userId, title], name: "documentIdentifier")
+  @@map("documents")
+}
+
+enum DocumentType {
+  RG
+  CNH
 }

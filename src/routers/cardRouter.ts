@@ -7,7 +7,7 @@ import * as CC from "../controllers/cardController.js";
 
 const cardRouter = Router();
 
-cardRouter.post("/cards/create", validToken, validSchema(cardSchema, "/cards/create"), CC.addCard);
+cardRouter.post("/cards", validToken, validSchema(cardSchema, "/cards"), CC.addCard);
 cardRouter.get("/cards", validToken, CC.getUserCards);
 cardRouter.get("/cards/:id", validToken, CC.getCardById);
 cardRouter.delete("/cards/:id/delete", validToken, CC.deleteCard);
