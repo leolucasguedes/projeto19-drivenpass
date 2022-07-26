@@ -1,6 +1,6 @@
 <p align="center">
-  <img  src="https://i.ibb.co/tBC6CgV/2525754.png"
-    width="200px" height="200px" >
+  <img src="https://notion-emojis.s3-us-west-2.amazonaws.com/prod/svg-twitter/1f512.svg"
+    width="180px" height="180px" >
 </p>
 <h1 align="center">
   DrivenPass
@@ -657,8 +657,12 @@ In this project I learned a lot about how to structure an API with TypeScript
 -   [@leolucasguedes](https://www.github.com/leolucasguedes)
 
 <br/>
-<br/>
-<br/>
+
+#
+
+## Thunder client
+
+- Para testes manuais é possível importar o arquivo **thunder-collection_projeto19-drivenpass.json**
 
 #
 

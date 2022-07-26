@@ -16,9 +16,6 @@ app.use(helmet());
 app.use(router);
 app.use(ExceptionHandler);
 
-
-app.use(router);
-
 const PORT = +process.env.PORT || 5000;
 
 app.get('/', async (_req: Request, res: Response) => res.send('Online'));
